@@ -23,7 +23,7 @@ int Joystick::getValueY()
 };
 int Joystick::positiveDirectonX()
 {
-    int positiveDirecton = map(valueX, 503, 1023, 1, 3);
+    int positiveDirecton = map(valueX, 513, 1023, 1, 3);
 
     switch (positiveDirecton)
     {
@@ -36,7 +36,7 @@ int Joystick::positiveDirectonX()
 };
 int Joystick::negativeDirectonX()
 {
-    int positiveDirecton = map(valueX, 0, 483, 3, 1);
+    int positiveDirecton = map(valueX, 0, 473, 3, 1);
 
     switch (positiveDirecton)
     {
@@ -49,7 +49,7 @@ int Joystick::negativeDirectonX()
 };
 int Joystick::positiveDirectonY()
 {
-    int positiveDirecton = map(valueY, 503, 1023, 1, 3);
+    int positiveDirecton = map(valueY, 540, 1023, 1, 3);
 
     switch (positiveDirecton)
     {
@@ -62,7 +62,7 @@ int Joystick::positiveDirectonY()
 };
 int Joystick::negativeDirectonY()
 {
-    int positiveDirecton = map(valueY, 0, 483, 3, 1);
+    int positiveDirecton = map(valueY, 0, 500, 3, 1);
 
     switch (positiveDirecton)
     {
