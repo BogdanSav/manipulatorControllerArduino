@@ -2,14 +2,22 @@
 #include <Servo.h>
 #include "joystick.h"
 
+//defines
 #define Xpin A0
 #define Ypin A1
 #define ButtonPin 6
+
+//functions
+void yAxisPos();
+void yAxisNeg();
+
+//variables
 int angleX = 90;
 int angleY = 90;
 int angleY1 = 90;
 int count = 0;
 
+//classes
 Joystick joy(Xpin, Ypin);
 Servo horizServo;
 Servo vertServo1;
@@ -19,7 +27,9 @@ void setup()
 {
   Serial.begin(9600);
   joy.begin();
+
   pinMode(ButtonPin, INPUT);
+
   horizServo.attach(9);
   vertServo1.attach(11);
   vertServo2.attach(10);
@@ -27,12 +37,8 @@ void setup()
 
 void loop()
 {
-  // Serial.println("y:");
-  // Serial.println(joy.getValueY());
-  // Serial.println("x:");
-  // Serial.println(joy.getValueX());
 
-  // first servo
+  //horizontal servo
   if (joy.getValueX() > 503)
   {
     angleX += joy.positiveDirectonX();
@@ -55,40 +61,18 @@ void loop()
       angleX = 0;
     }
   }
-
+  // joystick button
   if (digitalRead(ButtonPin) == LOW)
   {
     delay(300);
     count++;
   }
 
-  // second servo
+  // vertical servos
   if (joy.getValueY() > 530)
   {
 
-    switch (count)
-    {
-    case 0:
-      angleY = vertServo1.read();
-      angleY1 = vertServo2.read();
-
-      angleY += joy.positiveDirectonY();
-      angleY1 += joy.positiveDirectonY();
-
-      vertServo1.write(angleY);
-      vertServo2.write(angleY1);
-      break;
-    case 1:
-      angleY = vertServo1.read();
-      angleY += joy.positiveDirectonY();
-      vertServo1.write(angleY);
-      break;
-    case 2:
-      angleY1 = vertServo2.read();
-      angleY1 += joy.positiveDirectonY();
-      vertServo2.write(angleY1);
-      break;
-    }
+    yAxisPos();
 
     if (count > 2)
     {
@@ -105,31 +89,7 @@ void loop()
   else if (joy.getValueY() < 510)
   {
 
-    // angleY -= joy.negativeDirectonY();
-
-    switch (count)
-    {
-    case 0:
-      angleY = vertServo1.read();
-      angleY1 = vertServo2.read();
-
-      angleY -= joy.negativeDirectonY();
-      angleY1 -= joy.negativeDirectonY();
-
-      vertServo1.write(angleY);
-      vertServo2.write(angleY1);
-      break;
-    case 1:
-      angleY = vertServo1.read();
-      angleY -= joy.negativeDirectonY();
-      vertServo1.write(angleY);
-      break;
-    case 2:
-      angleY1 = vertServo2.read();
-      angleY1 -= joy.negativeDirectonY();
-      vertServo2.write(angleY1);
-      break;
-    }
+    yAxisNeg();
 
     if (count > 2)
     {
@@ -142,5 +102,59 @@ void loop()
     }
 
     delay(20);
+  }
+}
+
+void yAxisPos()
+{
+  switch (count)
+  {
+  case 0:
+    angleY = vertServo1.read();
+    angleY1 = vertServo2.read();
+
+    angleY += joy.positiveDirectonY();
+    angleY1 += joy.positiveDirectonY();
+
+    vertServo1.write(angleY);
+    vertServo2.write(angleY1);
+    break;
+  case 1:
+    angleY = vertServo1.read();
+    angleY += joy.positiveDirectonY();
+    vertServo1.write(angleY);
+    break;
+  case 2:
+    angleY1 = vertServo2.read();
+    angleY1 += joy.positiveDirectonY();
+    vertServo2.write(angleY1);
+    break;
+  }
+}
+
+void yAxisNeg()
+{
+  switch (count)
+  {
+  case 0:
+    angleY = vertServo1.read();
+    angleY1 = vertServo2.read();
+
+    angleY -= joy.negativeDirectonY();
+    angleY1 -= joy.negativeDirectonY();
+
+    vertServo1.write(angleY);
+    vertServo2.write(angleY1);
+    break;
+  case 1:
+    angleY = vertServo1.read();
+    angleY -= joy.negativeDirectonY();
+    vertServo1.write(angleY);
+    break;
+  case 2:
+    angleY1 = vertServo2.read();
+    angleY1 -= joy.negativeDirectonY();
+    vertServo2.write(angleY1);
+    break;
   }
 }
